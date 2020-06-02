@@ -17,7 +17,7 @@ public class VertexRestApiApp extends AbstractVerticle {
     public static final String GET_ALL = "/getAll";
     public static final String ALL_DATA = "/getData";
     public static final String ADD = "/addData";
-    public static final String DELETE = "/delete";
+    public static final String DELETE = "/delete/:name";
     private final SubEntity finalSubEntity = new SubEntity();
 
     public static void main(String[] args) {
@@ -29,7 +29,6 @@ public class VertexRestApiApp extends AbstractVerticle {
         createSomeData();
         startWebApp(promise);
     }
-
 
     private void createSomeData() {
         SubEntity subEntity1 = new SubEntity("Test1", 1);
@@ -50,7 +49,7 @@ public class VertexRestApiApp extends AbstractVerticle {
         router.get(ALL_DATA).handler(this::getData);
         router.post(ADD).handler(BodyHandler.create()).handler(this::addData);
         router.delete(ALL_DATA).handler(this::getData);
-        router.delete(DELETE+"/:name").handler(this::deleteData);
+        router.delete(DELETE).handler(this::deleteData);
 
         // create http server
         vertx.createHttpServer()
@@ -102,6 +101,5 @@ public class VertexRestApiApp extends AbstractVerticle {
             routingContext.response().setStatusCode(200)
                     .end(paramName+" entity removed successfully");
         }
-
     }
 }
